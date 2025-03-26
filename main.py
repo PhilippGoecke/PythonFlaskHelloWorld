@@ -2,7 +2,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
   name = request.args.get('name', default = 'World', type = str)
   return 'Hello ' + str(name) + '!'
