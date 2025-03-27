@@ -8,4 +8,5 @@ def index():
   name = request.args.get('name', default = 'World', type = str)
   return 'Hello ' + str(name) + '!'
 
-app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+  app.run(host='0.0.0.0', port=5000)
