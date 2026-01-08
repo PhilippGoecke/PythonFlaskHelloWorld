@@ -1,21 +1,21 @@
-FROM debian:bookworm-slim as build-env
+FROM debian:trixie-slim as build-env
 
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt update && apt upgrade -y \
   # install tools
-  && apt install -y --no-install-recommends git curl ca-certificates \
+  && apt install -y --no-install-recommends --no-install-suggests git curl ca-certificates \
   # install python dependencies
-  && apt install -y --no-install-recommends make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev libsqlite3-dev \
+  && apt install -y --no-install-recommends --no-install-suggests make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev libsqlite3-dev \
   # make image smaller
   && rm -rf "/var/lib/apt/lists/*" \
   && rm -rf /var/cache/apt/archives
 
-RUN useradd -m pythonuser
-
-ENV HOME /home/pythonuser
+ARG USER=pythonuser
+RUN useradd --create-home --shell /bin/bash $USER
+ARG HOME="/home/$USER"
 WORKDIR $HOME
-USER pythonuser
+USER $USER
 
 RUN git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 ENV PATH $HOME/.pyenv/shims:$HOME/.pyenv/bin:$PATH
