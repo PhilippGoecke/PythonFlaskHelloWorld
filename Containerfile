@@ -29,7 +29,7 @@ RUN pyenv install --list | grep -A7 $PYTHON_VERSION \
 
 WORKDIR $HOME/app
 
-RUN pip install Flask \
+RUN pip install Flask gunicorn \
   && pip freeze
   #&& pip freeze > requirements.txt \
   #&& cat requirements.txt
@@ -40,6 +40,7 @@ COPY main.py .
 
 EXPOSE 5000
 
-CMD [ "python3", "-m" , "flask", "--app", "main", "run", "--host=0.0.0.0", "--debug=False"]
+#CMD [ "python3", "-m" , "flask", "--app", "main", "run", "--host=0.0.0.0", "--debug=False"]
+CMD [ "gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
 
 HEALTHCHECK CMD curl -f "http://localhost:5000" || exit 1
