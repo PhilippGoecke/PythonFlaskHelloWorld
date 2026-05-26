@@ -40,6 +40,6 @@ COPY main.py .
 
 EXPOSE 5000
 
-CMD [ "python3", "-m" , "flask", "--app", "main", "run", "--host=0.0.0.0"]
+CMD [ "python3", "-m" , "flask", "--app", "main", "run", "--host=0.0.0.0", "--debug=False"]
 
 HEALTHCHECK CMD curl -f "http://localhost:5000" || exit 1
